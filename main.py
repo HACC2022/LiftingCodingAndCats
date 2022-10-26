@@ -213,6 +213,7 @@ def admin():
 				if (now - d).days < 1:
 					urls_created_today += 1
 					clicks_today += db_row_dict['clicks']
+					
 				if (now - d).days < 7:
 					urls_created_last_7_days += 1
 					clicks_last_7_days += db_row_dict['clicks']
@@ -286,6 +287,20 @@ def denied_request(id_number):
 
 	return redirect(url_for('admin'))
 
+
+# creates delete request route
+@app.route('/delete_request/<id_number>')
+def delete_request(id_number):
+	# establish connection to database
+	db_connection = get_db_connection()
+
+	# increment the number of clicks in the database and close connection
+	db_connection.execute('DELETE FROM urls WHERE id = ?',
+						   (id_number,))
+	db_connection.commit()
+	db_connection.close()
+
+	return redirect(url_for('admin'))
 
 
 

@@ -92,7 +92,52 @@
 
 <button type="button" class="btn btn-primary btn-lg" id="most_clicked_urls_button" onclick="toggleTableViewMostClicked()">Display Most Clicked URLs</button>
 
+<button type="button" class="btn btn-warning btn-lg" id="admin_controls_button">Show Admin Controls</button>
+
 <br><br>
+
+<div id="admin-controls-panel">
+  <center>
+  <div class="card" id="controls_form_container" style="width: 50rem;">
+      <div class="card-header" id="admin_controls_header">
+        <h3 class="card-title">Administrator Controls</h3>
+      </div>
+      <br>
+
+    <div class="card-body">
+          <label for="admin-control">Enter ID of Database Entry</label>
+          <input type="text"
+               name="admin-control-id"
+               id="admin-control-id"
+               placeholder="Enter database ID"
+               class="form-control"
+               value=""
+               autofocus>     
+          </input>
+          <br>
+
+          <select class="form-select" aria-label="admin-select-menu" id="admin-select-menu">
+            <option selected>Choose an action</option>
+            <option value="APPROVE">APPROVE</option>
+            <option value="DENY">DENY</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+
+          <br>
+          <form method="post">
+            <div class="form-group">
+              <button type="submit" class="btn btn-success btn-lg" id="admin-control-button">Submit</button>
+            </div>
+          </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<br>
 
 <div id="pending_requests_table">
   <center><h2>Pending Requests</h2></center>
