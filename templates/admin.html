@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+	{% for message in get_flashed_messages() %}
+		<div class="alert alert-danger alert-dismissable fade show" role="alert">
+			<h4>Access Denied</h4>
+			<h5>Incorrect Username and/or Password</h5>
+		</div>	
+	{% endfor %}
+
+	<center>
+	<div class="card" id="main_form_container" style="width: 50rem;">
+		  <div class="card-header" id="admin_login_header">
+		    <h3 class="card-title">Admin Login</h3>
+		  </div>
+		  <br>
+
+	 	<div class="card-body">
+			<form method="post">
+				<div class="form-group">
+					<label for="username">Enter administrator username</label>
+					<input type="text"
+						   name="username"
+						   placeholder="Enter username"
+						   class="form-control"
+						   value="{{ request.form['username'] }}"
+						   autofocus>	   	
+					</input>
+					<br>
+					<label for="password">Enter administator password</label>
+					<input type="password"
+						   name="password"
+						   placeholder="Enter password"
+						   class="form-control"
+						   value="{{ request.form['password'] }}"
+						   autofocus>	   	
+					</input>
+				</div>
+				<br>
+				<div class="form-group">
+					<button type="submit" class="btn btn-danger btn-lg">Submit</button>
+				</div>
+			</form>	
+		</div>
+	</div>
+{% endblock %}

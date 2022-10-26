@@ -1,0 +1,101 @@
+body {
+	background-color: #18828C !important;
+	font-family: Comfortaa !important;
+}
+
+tr {
+	color: white;
+	font-size: 1.2em;
+}
+
+
+h1, h2 {
+	color: white;
+}
+
+form {
+	font-size: 1.3em;
+}
+
+
+.header {
+	background-color: #18828C;
+	height: 200px;
+	font-family: Comfortaa;
+	color: white;
+	padding: 10px;
+}
+
+.header h1 {
+	font-size: 80px;
+}
+
+#pending_requests_table {
+	display: none;
+}
+
+#approved_requests_table {
+	display: none;
+}
+
+#denied_requests_table {
+	display: none;
+}
+
+#most_clicked_urls_table {
+	display: none;
+}
+
+
+
+
+
+
+
+
+.modal-header {
+	background-color: lightseagreen;
+}
+
+.modal-body p {
+	font-size: 1.3em;
+}
+
+#modal_body_id {
+	display: none;
+}
+
+.table-hover tbody tr:hover td {
+    background: lightcyan;
+}
+
+#admin_login_header {
+	background-color: darkred;
+}
+
+#admin_login_header h3 {
+	color: white;
+	padding: 10px;
+}
+
+.card-body p {
+	font-size: 3em;
+}
+
+#url_clicks_header {
+	background-color: darksalmon;
+}
+
+#clickstatscard {
+	background-color: darksalmon;
+}
+
+
+#url_stats_header {
+	background-color: mediumaquamarine;
+}
+
+#urlstatscard {
+	background-color: mediumaquamarine;
+}
+
