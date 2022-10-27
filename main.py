@@ -164,7 +164,7 @@ def admin():
 			return redirect(url_for('admin'))
 
 		# !!! move admin username and password into .env file
-		if (admin_username == 'vinsanity' and admin_password == 'password') or logged_in:
+		if (admin_username == os.getenv('admin_username') and admin_password == os.getenv('admin_password')):
 
 			# establish connection to database
 			db_connection = get_db_connection()
@@ -217,13 +217,14 @@ def admin():
 				formatted_date = datetime.strftime(hst, "%a\n%B %d, %Y \n%I:%M %p")
 				row_click_dict['created_at'] = formatted_date
 
-			# calculate total number of clicks and entries from all db rows
+			# dashboard statistics variable initialization
 			total_clicks = 0
 			total_entries = 0
 			urls_created_today = 0
 			urls_created_last_7_days = 0
 			now = datetime.now()
 
+			# update dashboard statistics
 			for db_row_dict in row_dictionaries:
 				total_clicks += db_row_dict['clicks']
 				total_entries += 1
@@ -248,6 +249,7 @@ def admin():
 			start = datetime.strptime("Wed October 26, 2022 12:00 AM", "%a\n%B %d, %Y \n%I:%M %p")
 			total_days = (now-start).days
 
+			# handle DivisionByZero error
 			if total_days == 0:
 				daily_click_average = total_clicks
 				daily_url_average = total_entries
@@ -269,7 +271,7 @@ def admin():
 									daily_click_average=daily_click_average,
 									daily_url_average=daily_url_average
 								  )
-
+		# handle if the administrator's user or password is incorrect
 		else:
 			# show a JS message to the user
 			flash('Incorrect username and/or password. Access Denied.')
@@ -279,8 +281,6 @@ def admin():
 	elif request.method == 'GET':
 		# display homepage with form to request a shortened url
 		return render_template('admin.html')
-
-
 
 
 # creates request approval route
@@ -296,7 +296,6 @@ def approve_request(id_number):
 	db_connection.close()
 
 	return redirect(url_for('admin'))
-
 
 
 # creates request denied route
