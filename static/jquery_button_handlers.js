@@ -79,7 +79,6 @@ $(function() {
       // run the deny request route
       window.location.href = redirect_url;
     } else {
-      alert("delete")
       var redirect_url = "http://127.0.0.1:5000/delete_request/" + id
       // run the delete request route
       window.location.href = redirect_url;

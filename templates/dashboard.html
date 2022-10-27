@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
+
 {% block content %}
 
-<h1>Admin Dashboard</h1>
+<h1>Administrator Dashboard</h1>
 
 <div class="card text-center">
   <div class="card-header" id="url_clicks_header">
@@ -105,79 +106,74 @@
       <br>
 
     <div class="card-body">
-          <label for="admin-control">Enter ID of Database Entry</label>
-          <input type="text"
-               name="admin-control-id"
-               id="admin-control-id"
-               placeholder="Enter database ID"
-               class="form-control"
-               value=""
-               autofocus>     
-          </input>
-          <br>
+      <label for="admin-control">Enter ID of Database Entry</label>
+      <input type="text"
+           name="admin-control-id"
+           id="admin-control-id"
+           placeholder="Enter database ID"
+           class="form-control"
+           value=""
+           autofocus>     
+      </input>
+      <br>
 
-          <select class="form-select" aria-label="admin-select-menu" id="admin-select-menu">
-            <option selected>Choose an action</option>
-            <option value="APPROVE">APPROVE</option>
-            <option value="DENY">DENY</option>
-            <option value="DELETE">DELETE</option>
-          </select>
+      <select class="form-select" aria-label="admin-select-menu" id="admin-select-menu">
+        <option selected>Choose an action</option>
+        <option value="APPROVE">APPROVE</option>
+        <option value="DENY">DENY</option>
+        <option value="DELETE">DELETE</option>
+      </select>
 
-          <br>
-          <form method="post">
-            <div class="form-group">
-              <button type="submit" class="btn btn-success btn-lg" id="admin-control-button">Submit</button>
-            </div>
-          </form>
-
+      <br>
+      <form method="post">
+        <div class="form-group">
+          <button type="submit" class="btn btn-success btn-lg" id="admin-control-button">Submit</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
 
-
-
-
 <br>
 
+<!-- Pending Requests Table -->
 <div id="pending_requests_table">
   <center><h2>Pending Requests</h2></center>
-<table class="table table-hover table-sm">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Shortened URL</th>
-      <th scope="col">Original URL</th>
-      <th scope="col">Clicks</th>
-      <th scope="col">Created</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
 
-  <tbody class="table-group-divider">
+  <table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Shortened URL</th>
+        <th scope="col">Original URL</th>
+        <th scope="col">Clicks</th>
+        <th scope="col">Created</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
 
-  	{% for row_dict in row_dictionaries %}
-      {% if row_dict['status'] == 'PENDING' %}
-        <tr data-bs-toggle="modal" data-bs-target="#pending_modal">
-      	<th scope="row">{{ row_dict['id'] }}</th>
-        <td>{{ row_dict['first_name'] }}</td>
-        <td>{{ row_dict['last_name'] }}</td>
-        <td>{{ row_dict['email'] }}</td>
-      	<td>{{ row_dict['short_url'] }}</td>
-      	<td>{{ row_dict['original_url'] }}</td>
-      	<td>{{ row_dict['clicks'] }}</td>
-        <td>{{ row_dict['created_at'] }}</td>
-        <td>{{ row_dict['status'] }}</td>
-        </tr>
-      {% endif %}
-  	{% endfor %}
-
-  </tbody>
-</table>
+    <tbody class="table-group-divider">
+    	{% for row_dict in row_dictionaries %}
+        {% if row_dict['status'] == 'PENDING' %}
+          <tr data-bs-toggle="modal" data-bs-target="#pending_modal">
+        	<th scope="row">{{ row_dict['id'] }}</th>
+          <td>{{ row_dict['first_name'] }}</td>
+          <td>{{ row_dict['last_name'] }}</td>
+          <td>{{ row_dict['email'] }}</td>
+        	<td>{{ row_dict['short_url'] }}</td>
+        	<td>{{ row_dict['original_url'] }}</td>
+        	<td>{{ row_dict['clicks'] }}</td>
+          <td>{{ row_dict['created_at'] }}</td>
+          <td>{{ row_dict['status'] }}</td>
+          </tr>
+        {% endif %}
+    	{% endfor %}
+    </tbody>
+  </table>
 </div>
-
 
 <!-- Modal for Pending Requests Table -->
 <div
@@ -212,7 +208,6 @@
         <form method="post">
           <div class="form-group">
             <button type="button" class="btn btn-success btn-lg" id="approve_request_button">Approve</button>
-
           </div>
         </form> 
         <form method="post">
@@ -225,130 +220,115 @@
   </div>
 </div>
 
-
+<!-- Approved Requests Table -->
 <div id="approved_requests_table">
   <center><h2>Approved Requests</h2></center>
-<table class="table table-hover table-sm">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Shortened URL</th>
-      <th scope="col">Original URL</th>
-      <th scope="col">Clicks</th>
-      <th scope="col">Created</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
 
-  <tbody class="table-group-divider">
+  <table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Shortened URL</th>
+        <th scope="col">Original URL</th>
+        <th scope="col">Clicks</th>
+        <th scope="col">Created</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
 
-    {% for row_dict in row_dictionaries %}
-      {% if row_dict['status'] == 'APPROVED' %}
-        <tr>
-          <th scope="row">{{ row_dict['id'] }}</th>
-          <td>{{ row_dict['first_name'] }}</td>
-          <td>{{ row_dict['last_name'] }}</td>
-          <td>{{ row_dict['email'] }}</td>
-          <td>{{ row_dict['short_url'] }}</td>
-          <td>{{ row_dict['original_url'] }}</td>
-          <td>{{ row_dict['clicks'] }}</td>
-          <td>{{ row_dict['created_at'] }}</td>
-          <td>{{ row_dict['status'] }}</td>
-        </tr>
-      {% endif %}
-    {% endfor %}
-
-  </tbody>
-</table>
+    <tbody class="table-group-divider">
+      {% for row_dict in row_dictionaries %}
+        {% if row_dict['status'] == 'APPROVED' %}
+          <tr>
+            <th scope="row">{{ row_dict['id'] }}</th>
+            <td>{{ row_dict['first_name'] }}</td>
+            <td>{{ row_dict['last_name'] }}</td>
+            <td>{{ row_dict['email'] }}</td>
+            <td>{{ row_dict['short_url'] }}</td>
+            <td>{{ row_dict['original_url'] }}</td>
+            <td>{{ row_dict['clicks'] }}</td>
+            <td>{{ row_dict['created_at'] }}</td>
+            <td>{{ row_dict['status'] }}</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
+<!-- Denied Requests Table -->
 <div id="denied_requests_table">
   <center><h2>Denied Requests</h2></center>
-<table class="table table-hover table-sm">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Original URL</th>
-      <th scope="col">Created</th>
-      <th scope="col">Status</th>
-    </tr>
-  </thead>
+  <table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Original URL</th>
+        <th scope="col">Created</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
 
-  <tbody class="table-group-divider">
-
-    {% for row_dict in row_dictionaries %}
-      {% if row_dict['status'] == 'DENIED' %}
-        <tr>
-          <th scope="row">{{ row_dict['id'] }}</th>
-          <td>{{ row_dict['first_name'] }}</td>
-          <td>{{ row_dict['last_name'] }}</td>
-          <td>{{ row_dict['email'] }}</td>
-          <td>{{ row_dict['original_url'] }}</td>
-          <td>{{ row_dict['created_at'] }}</td>
-          <td>{{ row_dict['status'] }}</td>
-        </tr>
-      {% endif %}
-    {% endfor %}
-
-  </tbody>
-</table>
+    <tbody class="table-group-divider">
+      {% for row_dict in row_dictionaries %}
+        {% if row_dict['status'] == 'DENIED' %}
+          <tr>
+            <th scope="row">{{ row_dict['id'] }}</th>
+            <td>{{ row_dict['first_name'] }}</td>
+            <td>{{ row_dict['last_name'] }}</td>
+            <td>{{ row_dict['email'] }}</td>
+            <td>{{ row_dict['original_url'] }}</td>
+            <td>{{ row_dict['created_at'] }}</td>
+            <td>{{ row_dict['status'] }}</td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
-
+<!-- Most Clicked URLs Table -->
 <div id="most_clicked_urls_table">
   <center><h2>Most Popular URLs</h2></center>
-<table class="table table-hover table-sm">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">First Name</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Shortened URL</th>
-      <th scope="col">Original URL</th>
-      <th scope="col">Clicks</th>
-      <th scope="col">Created</th>
-    </tr>
-  </thead>
+  
+  <table class="table table-hover table-sm">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Shortened URL</th>
+        <th scope="col">Original URL</th>
+        <th scope="col">Clicks</th>
+        <th scope="col">Created</th>
+      </tr>
+    </thead>
 
-  <tbody class="table-group-divider">
-
-    {% for row_dict in sorted_row_dictionaries %}
-        {% if row_dict['clicks'] != 0 %}
-        <tr>
-          <th scope="row">{{ row_dict['id'] }}</th>
-          <td>{{ row_dict['first_name'] }}</td>
-          <td>{{ row_dict['last_name'] }}</td>
-          <td>{{ row_dict['email'] }}</td>
-          <td>{{ row_dict['short_url'] }}</td>
-          <td>{{ row_dict['original_url'] }}</td>
-          <td>{{ row_dict['clicks'] }}</td>
-          <td>{{ row_dict['created_at'] }}</td>
-        </tr>
-        {% endif %}
-    {% endfor %}
-
-  </tbody>
-</table>
+    <tbody class="table-group-divider">
+      {% for row_dict in sorted_row_dictionaries %}
+          {% if row_dict['clicks'] != 0 %}
+          <tr>
+            <th scope="row">{{ row_dict['id'] }}</th>
+            <td>{{ row_dict['first_name'] }}</td>
+            <td>{{ row_dict['last_name'] }}</td>
+            <td>{{ row_dict['email'] }}</td>
+            <td>{{ row_dict['short_url'] }}</td>
+            <td>{{ row_dict['original_url'] }}</td>
+            <td>{{ row_dict['clicks'] }}</td>
+            <td>{{ row_dict['created_at'] }}</td>
+          </tr>
+          {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
-
-
-
-
-
-
 {% endblock %}
-
-
-
-
-
-
 

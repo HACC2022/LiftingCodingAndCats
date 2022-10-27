@@ -1,8 +1,10 @@
 import sqlite3
 from hashids import Hashids
 from flask import Flask, render_template, url_for, request, flash, redirect
+from dotenv import load_dotenv
 from datetime import datetime
 from dateutil import tz
+import os
 
 
 # establishes connection to database
@@ -20,13 +22,12 @@ app = Flask(__name__)
 
 
 # stores a secret key for use with the hashids encoder
-# !!! move to .env file !!!
-app.config['SECRET_KEY'] = 'm1st3rManGktter$veLcr0m3iMEi'
+# key is stored in .env file which is not uploaded to github
+app.config['SECRET_KEY'] = os.getenv('secret_key')
 
 
 # creates the hashids instance with custom parameters
 # salt is like a unique seed
-# !!! move to .env file !!!
 hashids = Hashids(min_length = 5, salt = app.config['SECRET_KEY'])
 
 
@@ -34,6 +35,9 @@ hashids = Hashids(min_length = 5, salt = app.config['SECRET_KEY'])
 # must pass methods parameter since a user needs to submit a form
 @app.route('/', methods=('GET', 'POST'))
 def index():
+	# provides access to secret key
+	load_dotenv()
+
 	# connect to the database
 	db_connection = get_db_connection()
 
@@ -64,12 +68,8 @@ def index():
 
 		# store the four python string variables into the database
 		url_data = db_connection.execute('INSERT INTO urls (original_url, first_name, last_name, email) VALUES (?,?,?,?)', (url,first_name,last_name,email,))
-		# first_name_data = db_connection.execute('INSERT INTO urls (first_name) VALUES (?)', (first_name,))
-		# last_name_data = db_connection.execute('INSERT INTO urls (last_name) VALUES (?)', (last_name,))
-		# email_data = db_connection.execute('INSERT INTO urls (email) VALUES (?)', (email,))
 		db_connection.commit()
 		db_connection.close()
-
 
 		# obtain the unique row id of the database entry
 		url_id = url_data.lastrowid
@@ -80,23 +80,23 @@ def index():
 		# combine the domain host url with the hashed string
 		short_url = request.host_url + hashid
 
-
+		# display homepage to assure user that url request has been submitted
 		message1 = "URL Request Submitted Successfully!<br>"
-		message2 = "You will receive an email from our ETS team upon our security review to " + email + "<br>"
-		message3 = "Should you have any questions, please feel free to contact us via email at ets@hawaii.gov or by phone at 808-586-6000.<br>"
+		message2 = "You will receive an email from our ETS team upon our security review at " + email + "<br>"
+		message3 = "Feel free to contact us via email at ets@hawaii.gov or by phone at 808-586-6000 with any questions.<br><br>"
 		message4 = "Mahalo " + first_name + " for using Palekana!"
 		confirmation_message = message1 + message2 + message3 + message4
 		flash(confirmation_message)
 
-		# display homepage to assure user that url request has been submitted
 		return redirect(url_for('index'))
+	# display homepage with form to request a shortened url
 	elif request.method == 'GET':
-		# display homepage with form to request a shortened url
 		return render_template('index.html')
 
 
 # creates route for shortened url to redirect to original url
 # increments the clicks for that entry in the database
+# adds click data into database table to statistics display
 # shortened and hashed portion of url is passed as a parameter
 @app.route('/<id>')
 def url_redirect(id):
@@ -125,10 +125,14 @@ def url_redirect(id):
 		# increment the number of clicks in the database and close connection
 		db_connection.execute('UPDATE urls SET clicks = ? WHERE id = ?',
 							   (clicks+1, original_id))
+
+		# add click data into table to allow for tracking of when clicks were made
+		db_connection.execute('INSERT INTO clicks (shortened_url, original_url) VALUES (?,?)', (hashids.encode(original_id), original_url,))
+
 		db_connection.commit()
 		db_connection.close()
 
-		# redirects user to originally hashed url
+		# redirects user to full url
 		# user must enter the http:// or you'll get a tuple out of bounds error
 		return redirect(original_url)
 	# if decoding was not successful
@@ -168,12 +172,15 @@ def admin():
 			# convert database into a list of tuples
 			# each tuple contains all row data
 			db_rows_list = db_connection.execute('SELECT id, created_at, original_url, clicks, first_name, last_name, email, status FROM urls').fetchall()
+			db_rows_clicks = db_connection.execute('SELECT id, created_at, shortened_url, original_url FROM clicks').fetchall()
 			db_connection.close() # no need to commit since no changes made
 
 			# need to convert the tuples into dictionaries so they can be mutated
-			# create a list to store db_row_data dictionaries
+			# create lists to store data from each table into dictionaries
 			row_dictionaries = []
+			row_click_dictionaries = []
 
+			# convert each row tuple into dictionary
 			# add the shortened/hashed url into each row_dictionary
 			for row_tuple in db_rows_list:
 				row_dict = dict(row_tuple)
@@ -192,34 +199,53 @@ def admin():
 				formatted_date = datetime.strftime(hst, "%a\n%B %d, %Y \n%I:%M %p")
 				row_dict['created_at'] = formatted_date
 
-			# establish dashboard click and url stat variables
+			# convert each row tuple into dictionary
+			# used to calculate the clicks today and clicks per week
+			for row_clicks_tuple in db_rows_clicks:
+				row_click_dict = dict(row_clicks_tuple)
+				row_click_dictionaries.append(row_click_dict)
+
+				# convert from UTC into HST time zone
+				from_zone = tz.tzutc()
+				to_zone = tz.tzlocal()
+				utc = datetime.utcnow()
+				utc = datetime.strptime(row_click_dict['created_at'], '%Y-%m-%d %H:%M:%S')
+				utc = utc.replace(tzinfo=from_zone)
+				hst = utc.astimezone(to_zone)
+
+				# format datetime to be user friendly
+				formatted_date = datetime.strftime(hst, "%a\n%B %d, %Y \n%I:%M %p")
+				row_click_dict['created_at'] = formatted_date
+
+			# calculate total number of clicks and entries from all db rows
 			total_clicks = 0
 			total_entries = 0
-
-			clicks_today = 0
 			urls_created_today = 0
-
-			clicks_last_7_days = 0			
 			urls_created_last_7_days = 0
+			now = datetime.now()
 
 			for db_row_dict in row_dictionaries:
 				total_clicks += db_row_dict['clicks']
 				total_entries += 1
 
-				# updates clicks_today
-				# updates urls_today
 				d = datetime.strptime(str(db_row_dict['created_at']), "%a\n%B %d, %Y \n%I:%M %p")
-				now = datetime.now()
 				if (now - d).days < 1:
 					urls_created_today += 1
-					clicks_today += db_row_dict['clicks']
-					
 				if (now - d).days < 7:
 					urls_created_last_7_days += 1
-					clicks_last_7_days += db_row_dict['clicks']
+
+			# use row_click_dictionaries to populate click statistics
+			clicks_today = 0
+			clicks_last_7_days = 0
+			for url_clicked in row_click_dictionaries:
+				d = datetime.strptime(str(url_clicked['created_at']), "%a\n%B %d, %Y \n%I:%M %p")
+				if (now - d).days < 1:
+					clicks_today += 1
+				if (now - d).days < 7:
+					clicks_last_7_days += 1
 
 			# total days database has been live
-			start = datetime.strptime("Fri October 21, 2022 12:00 AM", "%a\n%B %d, %Y \n%I:%M %p")
+			start = datetime.strptime("Wed October 26, 2022 12:00 AM", "%a\n%B %d, %Y \n%I:%M %p")
 			total_days = (now-start).days
 
 			if total_days == 0:
