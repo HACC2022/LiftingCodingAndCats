@@ -1,23 +1,40 @@
+/* general app element styling */
 body {
 	background-color: #18828C !important;
 	font-family: Comfortaa !important;
 }
 
+/* header styling */
+h1, h2 {
+	color: white;
+}
+
+/* table row styling */
 tr {
 	color: white;
 	font-size: 1.2em;
 }
 
-
-h1, h2 {
-	color: white;
+.table-hover tbody tr:hover td {
+    background: lightcyan;
 }
 
+/* increase text size of general elements */
 form {
 	font-size: 1.3em;
 }
 
+.card-body p {
+	font-size: 3em;
+}
 
+.alert {
+	font-size: 1.5em;
+	padding: 4px;
+}
+
+
+/* app header styling */
 .header {
 	background-color: #18828C;
 	height: 200px;
@@ -30,6 +47,8 @@ form {
 	font-size: 80px;
 }
 
+
+/* admin table display to toggle */
 #pending_requests_table {
 	display: none;
 }
@@ -46,13 +65,12 @@ form {
 	display: none;
 }
 
+#admin-controls-panel {
+	display: none;
+}
 
 
-
-
-
-
-
+/* pending requests table modal styling */
 .modal-header {
 	background-color: lightseagreen;
 }
@@ -65,10 +83,8 @@ form {
 	display: none;
 }
 
-.table-hover tbody tr:hover td {
-    background: lightcyan;
-}
 
+/* admin login styling  */
 #admin_login_header {
 	background-color: darkred;
 }
@@ -78,10 +94,19 @@ form {
 	padding: 10px;
 }
 
-.card-body p {
-	font-size: 3em;
+
+/* Admin dashboard controls styling */
+#admin_controls_header {
+	background-color: lightseagreen;
 }
 
+#admin_controls_header h3 {
+	color: white;
+	padding: 6px;
+}
+
+
+/* Dashboard stats styling */
 #url_clicks_header {
 	background-color: darksalmon;
 }
@@ -89,7 +114,6 @@ form {
 #clickstatscard {
 	background-color: darksalmon;
 }
-
 
 #url_stats_header {
 	background-color: mediumaquamarine;

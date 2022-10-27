@@ -3,10 +3,11 @@
 {% block content %}
 
 	{% for message in get_flashed_messages() %}
+		<center>
 		<div class="alert alert-success alert-dismissable fade show" role="alert">
 			{{ message|safe }}
 		</div>
-    	
+		</center>
 	{% endfor %}
 
 	<center>
@@ -65,17 +66,7 @@
 			</form>
 	  </div>
 	</div>
-
 	</center>
 
 {% endblock %}
-
-
-
-
-
-
-
-
-
 
