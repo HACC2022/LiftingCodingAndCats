@@ -54,6 +54,13 @@ $(function() {
 $(document).ready(function(){
   $("#admin_controls_button").click(function(){
     $("#admin-controls-panel").slideToggle();
+
+    // change button text for better user experience
+    if ($('#admin_controls_button').text() == "Show Admin Controls") {
+      $('#admin_controls_button').text("Hide Admin Controls");
+    } else {
+      $('#admin_controls_button').text("Show Admin Controls");
+    }
   });
 });
 
