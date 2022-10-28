@@ -51,8 +51,8 @@ $(function() {
 });
 
 // admin dashboard control view button action
-$(document).ready(function(){
-  $("#admin_controls_button").click(function(){
+$(document).ready(function() {
+  $("#admin_controls_button").click(function() {
     $("#admin-controls-panel").slideToggle();
 
     // change button text for better user experience
