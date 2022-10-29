@@ -67,6 +67,16 @@ def index():
 			flash('Please enter your last name, it is required.')
 			return redirect(url_for('index'))
 		if not email:
+			flash('Please enter some email, it is required.')
+			return redirect(url_for('index'))
+
+		# error handling for proper email address
+		validate_hawaii_gov_email = email.split("@")
+		if len(validate_hawaii_gov_email) > 2:
+			flash('Emails only contain one @ sign')
+			return redirect(url_for('index'))
+
+		if validate_hawaii_gov_email[1].lower() != "hawaii.gov":
 			flash('Please enter hawaii.gov email, it is required.')
 			return redirect(url_for('index'))
 
@@ -82,7 +92,7 @@ def index():
 		hashid = hashids.encode(url_id)
 
 		# combine the domain host url with the hashed string
-		short_url = request.host_url + hashid
+		short_url = request.host_url + "palekana/" + hashid
 
 		# display homepage to assure user that url request has been submitted
 		message1 = "URL Request Submitted Successfully!<br>"
@@ -188,7 +198,7 @@ def admin():
 			# add the shortened/hashed url into each row_dictionary
 			for row_tuple in db_rows_list:
 				row_dict = dict(row_tuple)
-				row_dict['short_url'] = request.host_url + hashids.encode(row_tuple['id'])
+				row_dict['short_url'] = request.host_url + "palekana/" + hashids.encode(row_tuple['id'])
 				row_dictionaries.append(row_dict)
 
 				# convert from UTC into HST time zone

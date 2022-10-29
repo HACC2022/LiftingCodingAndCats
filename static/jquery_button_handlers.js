@@ -33,7 +33,7 @@ $(function() {
 $(function() {
   $('#approve_request_button').on('click', function() {
       var id = $("#modal_body_id").text();
-      var redirect_url = "http://127.0.0.1:5000/approve_request/" + id;
+      var redirect_url = "http://www.bradashburn.com/palekana/approve_request/" + id;
       // run the approve request route
       window.location.href = redirect_url;
   });
@@ -44,7 +44,7 @@ $(function() {
 $(function() {
   $('#deny_request_button').on('click', function() {
       var id = $("#modal_body_id").text();
-      var redirect_url = "http://127.0.0.1:5000/denied_request/" + id;
+      var redirect_url = "http://www.bradashburn.com/palekana/denied_request/" + id;
       // run the deny request route
       window.location.href = redirect_url
   });
@@ -78,15 +78,15 @@ $(function() {
     e.preventDefault();
 
     if (selection == "APPROVE") {
-      var redirect_url = "http://127.0.0.1:5000/approve_request/" + id
+      var redirect_url = "approve_request/" + id
       // run the approve request route
       window.location.href = redirect_url;
     } else if (selection == "DENY") {
-      var redirect_url = "http://127.0.0.1:5000/denied_request/" + id
+      var redirect_url = "denied_request/" + id
       // run the deny request route
       window.location.href = redirect_url;
     } else {
-      var redirect_url = "http://127.0.0.1:5000/delete_request/" + id
+      var redirect_url = "delete_request/" + id
       // run the delete request route
       window.location.href = redirect_url;
     }
