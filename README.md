@@ -23,7 +23,7 @@ The thing we are super proud about is our development process. We researched the
 ## What we learned
 We have never created a web app in Python before, let alone one with a database, so nearly everything was new. There is a huge leap from the introductory ICS courses to building a functioning application designed for real world usage. Learning how to use the Flask framework, implementing SQL CRUD functionality, along with managing user login was a major level up in our skills.
 
-## What's next for Palekana URL Shortener - Team LiftingCodingAndCats
+## What's next for Team LiftingCodingAndCats
 Our team would love the opportunity to work with the Office of Enterprise Technology Services to turn Palekana into a valuable service for the Hawaii government. We would like to implement more robust security features such as multi-factor authenication and learn how to build insightful data visualizations that could be useful to Palekana administrators.
-a
+
 We would like to express our sincere gratitude to the organizers, sponsors, and judges for volunteering so much of their time to putting on this incredible event for our community!
