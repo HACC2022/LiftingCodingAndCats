@@ -127,7 +127,7 @@
       <br>
       <form method="post">
         <div class="form-group">
-          <button type="submit" class="btn btn-success btn-lg" id="admin-control-button">Submit</button>
+          <button type="submit" class="btn btn-success btn-lg" id="admin-control-button" data-username="{{ username }}" data-password="{{ password }}">Submit</button>
         </div>
       </form>
     </div>
@@ -207,12 +207,12 @@
       <div class="modal-footer">
         <form method="post">
           <div class="form-group">
-            <button type="button" class="btn btn-success btn-lg" id="approve_request_button">Approve</button>
+            <button type="button" class="btn btn-success btn-lg" id="approve_request_button" data-username="{{ username }}" data-password="{{ password }}">Approve</button>
           </div>
         </form> 
         <form method="post">
           <div class="form-group">
-           <button type="button" class="btn btn-danger btn-lg" id="deny_request_button">Deny</button>
+           <button type="button" class="btn btn-danger btn-lg" id="deny_request_button" data-username="{{ username }}" data-password="{{ password }}">Deny</button>
           </div>
         </form> 
       </div>

@@ -33,11 +33,12 @@ $(function() {
 $(function() {
   $('#approve_request_button').on('click', function() {
       var id = $("#modal_body_id").text();
-
+      var username = $(this).data('username')
+      var password = $(this).data('password')
 
       // var redirect_url = "http://www.bradashburn.com/palekana/approve_request/" + id;
       var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=approve_request&username=vinsanity&password=biochemistry"
+      var url_add_request_type = url_add_id + "&request_type=approve_request&username=" + username + "&password=" + password
 
       // run the approve request route
       window.location.href = url_add_request_type;
@@ -49,12 +50,14 @@ $(function() {
 $(function() {
   $('#deny_request_button').on('click', function() {
       var id = $("#modal_body_id").text();
+      var username = $(this).data('username')
+      var password = $(this).data('password')
 
       var url_add_id = "http://localhost:5000/admin?request_id=" + id;
       var url_add_request_type = url_add_id + "&request_type=deny_request"
 
 
-      var url_add_request_type = url_add_id + "&request_type=deny_request&username=vinsanity&password=biochemistry"
+      var url_add_request_type = url_add_id + "&request_type=deny_request&username=" + username + "&password=" + password
 
 
       // run the approve request route
@@ -82,6 +85,8 @@ $(function() {
   $('#admin-control-button').on('click', function(e) {
     // get value of id from input field
     var id = $("#admin-control-id").val();
+    var username = $(this).data('username')
+    var password = $(this).data('password')
 
     // get which selection was chosen (APPROVE, DENY, DELETE)
     var selection = $('#admin-select-menu').find(":selected").val();
@@ -92,19 +97,19 @@ $(function() {
     if (selection == "APPROVE") {
       // var redirect_url = "http://www.bradashburn.com/palekana/approve_request/" + id;
       var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=approve_request&username=vinsanity&password=biochemistry"
+      var url_add_request_type = url_add_id + "&request_type=approve_request&username=" + username + "&password=" + password
 
       // run the approve request route
       window.location.href = url_add_request_type;
     } else if (selection == "DENY") {
       var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=deny_request&username=vinsanity&password=biochemistry"
+      var url_add_request_type = url_add_id + "&request_type=deny_request&username=" + username + "&password=" + password
 
       // run the approve request route
       window.location.href = url_add_request_type;
     } else {
       var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=delete_request&username=vinsanity&password=biochemistry"
+      var url_add_request_type = url_add_id + "&request_type=delete_request&username=" + username + "&password=" + password
 
       // run the approve request route
       window.location.href = url_add_request_type;

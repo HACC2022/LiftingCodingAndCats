@@ -325,7 +325,9 @@ def admin():
 									urls_created_last_7_days=urls_created_last_7_days,
 									clicks_last_7_days=clicks_last_7_days,
 									daily_click_average=daily_click_average,
-									daily_url_average=daily_url_average
+									daily_url_average=daily_url_average,
+									username=request.args.get('username') or admin_username,
+									password=request.args.get('password') or admin_password
 								  )
 		# handle if the administrator's user or password is incorrect
 		else:
