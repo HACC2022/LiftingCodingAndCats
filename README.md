@@ -1,6 +1,6 @@
-# LiftingCodingAndCats
-Brad Ashburn
-Christina Mende
+# Palekana URL Shortener
+## TEam LiftingCodingAndCats
+###Brad Ashburn and Christina Mende
 
 ## Inspiration
 It is heartbreaking that kupuna are preyed upon by scammers online. And even the most tech savvy folks are not immune to falling victim. We feel passionate about this call to action by the Office of Enterprise Technology Services because we want Hawaii to be a safe space for our families, friends, and coworkers. We find ourselves in a perilious time of election denial and distrust of government. Imagine what would happen if the State released a shortened URL on social media that directed to a site with malware or ransomware. The damage would be immense. We built Palekana for government employees to easily create and curate safely-shortened urls for distribution to the public.
