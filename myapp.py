@@ -71,6 +71,10 @@ def index():
 			return redirect(url_for('index'))
 
 		# error handling for proper email address
+		if "@" not in email or "." not in email:
+			flash('Emails must contain one @ and one .')
+			return redirect(url_for('index'))
+
 		validate_hawaii_gov_email = email.split("@")
 		if len(validate_hawaii_gov_email) > 2:
 			flash('Emails only contain one @ sign')
@@ -161,24 +165,60 @@ def url_redirect(id):
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
 	# create an admin login form
-	if request.method == 'POST':
+	if request.method == 'POST' or (request.args.get('username') == os.getenv('admin_username') and request.args.get('password') == os.getenv('admin_password') ):
 
-		# store the login info from the form
-		admin_username = request.form['username']
-		admin_password = request.form['password']
+		if not (request.args.get('username') == os.getenv('admin_username') and request.args.get('password') == os.getenv('admin_password')):
+			# store the login info from the form
+			admin_username = request.form['username']
+			admin_password = request.form['password']
 
-		# handle event where user submits a blank username field
-		if not admin_username:
-			flash('No username entered. Access Denied.')
-			return redirect(url_for('admin'))
+			# handle event where user submits a blank username field
+			if not admin_username:
+				flash('No username entered. Access Denied.')
+				return redirect(url_for('admin'))
 
-		# handle event where user submits a blank password form field
-		if not admin_password:
-			flash('No password entered. Access Denied.')
-			return redirect(url_for('admin'))
+			# handle event where user submits a blank password form field
+			if not admin_password:
+				flash('No password entered. Access Denied.')
+				return redirect(url_for('admin'))
 
 		# credentials hidden from public
-		if (admin_username == os.getenv('admin_username') and admin_password == os.getenv('admin_password')):
+		if (request.args.get('username') == os.getenv('admin_username') and request.args.get('password') == os.getenv('admin_password')) or (admin_username == os.getenv('admin_username') and admin_password == os.getenv('admin_password')):
+
+
+			if request.args.get('request_type') == "approve_request":
+				# establish connection to database
+				db_connection = get_db_connection()
+				id_number = request.args.get('request_id')
+
+				db_connection.execute('UPDATE urls SET status = ? WHERE id = ?',
+						   ("APPROVED", id_number))
+				db_connection.commit()
+				db_connection.close()
+
+
+			if request.args.get('request_type') == "deny_request":
+				# establish connection to database
+				db_connection = get_db_connection()
+				id_number = request.args.get('request_id')
+
+				db_connection.execute('UPDATE urls SET status = ? WHERE id = ?',
+						   ("DENIED", id_number))
+				db_connection.commit()
+				db_connection.close()
+
+
+			if request.args.get('request_type') == "delete_request":
+				# establish connection to database
+				db_connection = get_db_connection()
+				id_number = request.args.get('request_id')
+
+				db_connection.execute('DELETE FROM urls WHERE id = ?',
+						   (id_number,))
+				db_connection.commit()
+				db_connection.close()
+
+
 
 			# establish connection to database
 			db_connection = get_db_connection()
@@ -296,53 +336,55 @@ def admin():
 
 	elif request.method == 'GET':
 		# display homepage with form to request a shortened url
-		return render_template('admin.html')
+		if not (request.args.get('username') == os.getenv('admin_username') and request.args.get('password') == os.getenv('admin_password')):
+			return render_template('admin.html')
+
 
 
 # creates request approval route
-@app.route('/approve_request/<id_number>')
-def approve_request(id_number):
-	# establish connection to database
-	db_connection = get_db_connection()
+# @app.route('/approve_request/<id_number>')
+# def approve_request(id_number):
+# 	# establish connection to database
+# 	db_connection = get_db_connection()
 
-	# increment the number of clicks in the database and close connection
-	db_connection.execute('UPDATE urls SET status = ? WHERE id = ?',
-						   ("APPROVED", id_number))
-	db_connection.commit()
-	db_connection.close()
+# 	# increment the number of clicks in the database and close connection
+# 	db_connection.execute('UPDATE urls SET status = ? WHERE id = ?',
+# 						   ("APPROVED", id_number))
+# 	db_connection.commit()
+# 	db_connection.close()
 
-	return redirect(url_for('admin'))
-
-
-# creates request denied route
-@app.route('/denied_request/<id_number>')
-def denied_request(id_number):
-
-	# establish connection to database
-	db_connection = get_db_connection()
-
-	# increment the number of clicks in the database and close connection
-	db_connection.execute('UPDATE urls SET status = ? WHERE id = ?',
-						   ("DENIED", id_number))
-	db_connection.commit()
-	db_connection.close()
-
-	return redirect(url_for('admin'))
+# 	return redirect(url_for('admin'))
 
 
-# creates delete request route
-@app.route('/delete_request/<id_number>')
-def delete_request(id_number):
-	# establish connection to database
-	db_connection = get_db_connection()
+# # creates request denied route
+# @app.route('/denied_request/<id_number>')
+# def denied_request(id_number):
 
-	# increment the number of clicks in the database and close connection
-	db_connection.execute('DELETE FROM urls WHERE id = ?',
-						   (id_number,))
-	db_connection.commit()
-	db_connection.close()
+# 	# establish connection to database
+# 	db_connection = get_db_connection()
 
-	return redirect(url_for('admin'))
+# 	# increment the number of clicks in the database and close connection
+# 	db_connection.execute('UPDATE urls SET status = ? WHERE id = ?',
+# 						   ("DENIED", id_number))
+# 	db_connection.commit()
+# 	db_connection.close()
+
+# 	return redirect(url_for('admin'))
+
+
+# # creates delete request route
+# @app.route('/delete_request/<id_number>')
+# def delete_request(id_number):
+# 	# establish connection to database
+# 	db_connection = get_db_connection()
+
+# 	# increment the number of clicks in the database and close connection
+# 	db_connection.execute('DELETE FROM urls WHERE id = ?',
+# 						   (id_number,))
+# 	db_connection.commit()
+# 	db_connection.close()
+
+# 	return redirect(url_for('admin'))
 
 
 

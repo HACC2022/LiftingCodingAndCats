@@ -33,9 +33,14 @@ $(function() {
 $(function() {
   $('#approve_request_button').on('click', function() {
       var id = $("#modal_body_id").text();
-      var redirect_url = "http://www.bradashburn.com/palekana/approve_request/" + id;
+
+
+      // var redirect_url = "http://www.bradashburn.com/palekana/approve_request/" + id;
+      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=approve_request&username=vinsanity&password=biochemistry"
+
       // run the approve request route
-      window.location.href = redirect_url;
+      window.location.href = url_add_request_type;
   });
 });
 
@@ -44,9 +49,16 @@ $(function() {
 $(function() {
   $('#deny_request_button').on('click', function() {
       var id = $("#modal_body_id").text();
-      var redirect_url = "http://www.bradashburn.com/palekana/denied_request/" + id;
-      // run the deny request route
-      window.location.href = redirect_url
+
+      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=deny_request"
+
+
+      var url_add_request_type = url_add_id + "&request_type=deny_request&username=vinsanity&password=biochemistry"
+
+
+      // run the approve request route
+      window.location.href = url_add_request_type;
   });
 });
 
@@ -78,17 +90,24 @@ $(function() {
     e.preventDefault();
 
     if (selection == "APPROVE") {
-      var redirect_url = "approve_request/" + id
+      // var redirect_url = "http://www.bradashburn.com/palekana/approve_request/" + id;
+      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=approve_request&username=vinsanity&password=biochemistry"
+
       // run the approve request route
-      window.location.href = redirect_url;
+      window.location.href = url_add_request_type;
     } else if (selection == "DENY") {
-      var redirect_url = "denied_request/" + id
-      // run the deny request route
-      window.location.href = redirect_url;
+      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=deny_request&username=vinsanity&password=biochemistry"
+
+      // run the approve request route
+      window.location.href = url_add_request_type;
     } else {
-      var redirect_url = "delete_request/" + id
-      // run the delete request route
-      window.location.href = redirect_url;
+      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=delete_request&username=vinsanity&password=biochemistry"
+
+      // run the approve request route
+      window.location.href = url_add_request_type;
     }
   });
 });
