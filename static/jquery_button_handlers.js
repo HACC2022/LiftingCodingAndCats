@@ -18,6 +18,20 @@ $(function() {
     var created_at = tr.cells[7].textContent;
 
     // set html content of each modal field
+    
+  
+
+    // if statement to set 3 threat levels
+    if (original_url.includes("hawaii.gov")) {
+      $("#modal_body_threat_level").attr("src", "./static/faces_1.jpg");
+    } else if (original_url.includes("youtube")) {
+      $("#modal_body_threat_level").attr("src", "./static/faces_2.jpg");
+    } else if (original_url.includes("russia")) {
+      $("#modal_body_threat_level").attr("src", "./static/faces_3.jpg");
+    } else {
+      $("#modal_body_threat_level").attr("src", "./static/faces_2.jpg");
+    };
+
     $('#modal_body_id').html(id);
     $('#modal_body_first_name').html('First Name: ' + first_name);
     $('#modal_body_last_name').html('Last Name: ' + last_name);
@@ -33,15 +47,21 @@ $(function() {
 $(function() {
   $('#approve_request_button').on('click', function() {
       var id = $("#modal_body_id").text();
-      var username = $(this).data('username')
-      var password = $(this).data('password')
+      var username = $(this).data('username');
+      var password = $(this).data('password');
 
-      // var redirect_url = "http://www.bradashburn.com/palekana/approve_request/" + id;
-      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=approve_request&username=" + username + "&password=" + password
+      var name = $('#modal_body_first_name')
+      var email = $('#modal_body_email')
+      var short_url = $('#modal_body_short_url')
+      var long_url = $('#modal_body_original_url')
+
+
+      var url_add_id = "http://www.bradashburn.com/palekana/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=approve_request&username=" + username + "&password=" + password;
+      var add_approval = url_add_request_type +"&name=" + name + "&email=" + email + "&short_url=" + short_url + "&long_url=" + long_url
 
       // run the approve request route
-      window.location.href = url_add_request_type;
+      window.location.href = add_approval;
   });
 });
 
@@ -50,15 +70,11 @@ $(function() {
 $(function() {
   $('#deny_request_button').on('click', function() {
       var id = $("#modal_body_id").text();
-      var username = $(this).data('username')
-      var password = $(this).data('password')
+      var username = $(this).data('username');
+      var password = $(this).data('password');
 
-      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=deny_request"
-
-
-      var url_add_request_type = url_add_id + "&request_type=deny_request&username=" + username + "&password=" + password
-
+      var url_add_id = "http://www.bradashburn.com/palekana/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=deny_request&username=" + username + "&password=" + password;
 
       // run the approve request route
       window.location.href = url_add_request_type;
@@ -85,8 +101,8 @@ $(function() {
   $('#admin-control-button').on('click', function(e) {
     // get value of id from input field
     var id = $("#admin-control-id").val();
-    var username = $(this).data('username')
-    var password = $(this).data('password')
+    var username = $(this).data('username');
+    var password = $(this).data('password');
 
     // get which selection was chosen (APPROVE, DENY, DELETE)
     var selection = $('#admin-select-menu').find(":selected").val();
@@ -95,23 +111,16 @@ $(function() {
     e.preventDefault();
 
     if (selection == "APPROVE") {
-      // var redirect_url = "http://www.bradashburn.com/palekana/approve_request/" + id;
-      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=approve_request&username=" + username + "&password=" + password
-
-      // run the approve request route
+      var url_add_id = "http://www.bradashburn.com/palekana/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=approve_request&username=" + username + "&password=" + password;
       window.location.href = url_add_request_type;
     } else if (selection == "DENY") {
-      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=deny_request&username=" + username + "&password=" + password
-
-      // run the approve request route
+      var url_add_id = "http://www.bradashburn.com/palekana/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=deny_request&username=" + username + "&password=" + password;
       window.location.href = url_add_request_type;
     } else {
-      var url_add_id = "http://localhost:5000/admin?request_id=" + id;
-      var url_add_request_type = url_add_id + "&request_type=delete_request&username=" + username + "&password=" + password
-
-      // run the approve request route
+      var url_add_id = "http://www.bradashburn.com/palekana/admin?request_id=" + id;
+      var url_add_request_type = url_add_id + "&request_type=delete_request&username=" + username + "&password=" + password;
       window.location.href = url_add_request_type;
     }
   });

@@ -4,7 +4,9 @@ from flask import Flask, render_template, url_for, request, flash, redirect
 from dotenv import load_dotenv
 from datetime import datetime
 from dateutil import tz
+from pytz import timezone
 import os
+from flask_mail import Mail, Message
 
 
 # establishes connection to database
@@ -19,6 +21,17 @@ def get_db_connection():
 
 # creates the Flask app instance
 app = Flask(__name__)
+
+
+# email settings and initialization
+mail= Mail(app)
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = os.getenv(MAIL_USERNAME)
+app.config['MAIL_PASSWORD'] = os.getenv(MAIL_PASSWORD)
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 
 # entry point for web hosting service
@@ -191,8 +204,13 @@ def admin():
 
 				db_connection.execute('UPDATE urls SET status = ? WHERE id = ?',
 						   ("APPROVED", id_number))
+
 				db_connection.commit()
 				db_connection.close()
+
+				msg = Message('Your URL shortening request has been APPROVED', sender = 'Palekana by ETS', recipients = ['bashburn@hawaii.edu'])
+				msg.body = "Hi " + request.args.get('name') +  ",/nHere is your shortened URL: " + request.args.get('short_url') + "/nYour original URL: " + request.args.get('long_url')
+				mail.send(msg)
 
 			# update database for denied request
 			if request.args.get('request_type') == "deny_request":
@@ -240,7 +258,7 @@ def admin():
 
 				# convert from UTC into HST time zone
 				from_zone = tz.tzutc()
-				to_zone = tz.tzlocal()
+				to_zone = timezone('Pacific/Honolulu')
 				utc = datetime.utcnow()
 				utc = datetime.strptime(row_dict['created_at'], '%Y-%m-%d %H:%M:%S')
 				utc = utc.replace(tzinfo=from_zone)
@@ -258,7 +276,7 @@ def admin():
 
 				# convert from UTC into HST time zone
 				from_zone = tz.tzutc()
-				to_zone = tz.tzlocal()
+				to_zone = timezone('Pacific/Honolulu')
 				utc = datetime.utcnow()
 				utc = datetime.strptime(row_click_dict['created_at'], '%Y-%m-%d %H:%M:%S')
 				utc = utc.replace(tzinfo=from_zone)
